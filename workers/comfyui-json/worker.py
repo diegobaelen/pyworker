@@ -1,5 +1,7 @@
 import random
 import sys
+import os
+import subprocess
 
 from vastai import Worker, WorkerConfig, HandlerConfig, LogActionConfig, BenchmarkConfig
 
@@ -56,6 +58,44 @@ benchmark_dataset = [
     } for prompt in benchmark_prompts
 ]
 
+
+def maybe_download_hunyuan3d_models():
+    # Désactivable via env
+    if os.getenv("DOWNLOAD_HUNYUAN3D_MODELS", "1") != "1":
+        print("[hunyuan3d] DOWNLOAD_HUNYUAN3D_MODELS != 1, skipping.")
+        return
+
+    comfy_home = os.getenv("COMFY_HOME", "/workspace/ComfyUI")
+    dit_path = os.path.join(comfy_home, "models", "diffusion_models", "hunyuan3d-dit-v2-1.ckpt")
+    vae_path = os.path.join(comfy_home, "models", "vae", "hunyuan3d-vae-v2-1.ckpt")
+
+    os.makedirs(os.path.dirname(dit_path), exist_ok=True)
+    os.makedirs(os.path.dirname(vae_path), exist_ok=True)
+
+    dit_url = os.getenv(
+        "HUNYUAN_DIT_URL",
+        "https://huggingface.co/tencent/Hunyuan3D-2.1/resolve/main/hunyuan3d-dit-v2-1/model.fp16.ckpt",
+    )
+    vae_url = os.getenv(
+        "HUNYUAN_VAE_URL",
+        "https://huggingface.co/tencent/Hunyuan3D-2.1/resolve/main/hunyuan3d-vae-v2-1/model.fp16.ckpt",
+    )
+
+    if not os.path.isfile(dit_path):
+        print("[hunyuan3d] Downloading DIT checkpoint...")
+        subprocess.check_call(["bash", "-lc", f"curl -L '{dit_url}' -o '{dit_path}'"])
+    else:
+        print("[hunyuan3d] DIT checkpoint already present.")
+
+    if not os.path.isfile(vae_path):
+        print("[hunyuan3d] Downloading VAE checkpoint...")
+        subprocess.check_call(["bash", "-lc", f"curl -L '{vae_url}' -o '{vae_path}'"])
+    else:
+        print("[hunyuan3d] VAE checkpoint already present.")
+
+    print("[hunyuan3d] Model download done.")
+
+
 worker_config = WorkerConfig(
     model_server_url=MODEL_SERVER_URL,
     model_server_port=MODEL_SERVER_PORT,
@@ -78,4 +118,5 @@ worker_config = WorkerConfig(
     )
 )
 
+maybe_download_hunyuan3d_models()
 Worker(worker_config).run()
