@@ -86,6 +86,9 @@ if [ ! -d "$DR_DIR" ]; then
   log "=> Vérifie que ComfyUI-3D-Pack est bien sous $COMFY/custom_nodes/ComfyUI-3D-Pack"
   exit 1
 fi
+cd "$COMFY/custom_nodes/ComfyUI-3D-Pack/"
+pip install -r requirements.txt
+python install.py
 
 log "Compilation mesh painter..."
 cd "$DR_DIR"
