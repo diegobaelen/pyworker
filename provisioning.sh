@@ -65,19 +65,13 @@ ln -sf /usr/lib/x86_64-linux-gnu/libGL.so.1 /usr/lib/x86_64-linux-gnu/libOpenGL.
 ldconfig
 ldconfig -p | grep -E "libOpenGL\.so\.0|libGL\.so\.1" || true
 
-# 4) Installer le pack via ComfyUI-Manager (cm-cli.py existe chez toi)
-MANAGER_DIR="$COMFY/custom_nodes/ComfyUI-Manager"
-if [ ! -d "$MANAGER_DIR" ]; then
-  log "Installation ComfyUI-Manager..."
-  git clone https://github.com/ltdrdata/ComfyUI-Manager.git "$MANAGER_DIR"
-else
-  log "ComfyUI-Manager déjà présent, pull..."
-  (cd "$MANAGER_DIR" && git pull --rebase) || true
-fi
 
-log "Installation ComfyUI-3D-Pack via cm-cli.py..."
-cd "$MANAGER_DIR"
-python cm-cli.py install https://github.com/MrForExample/ComfyUI-3D-Pack.git
+log "Installation ComfyUI-3D-Pack "
+cd "$COMFY/custom_nodes/
+git clone https://github.com/MrForExample/ComfyUI-3D-Pack.git
+cd "$COMFY/custom_nodes/ComfyUI-3D-Pack/
+pip install -r requirements.txt
+python install.py
 
 # 5) Compiler mesh painter (chemin EXACT demandé)
 DR_DIR="$COMFY/custom_nodes/ComfyUI-3D-Pack/Gen_3D_Modules/Hunyuan3D_2_1/hy3dpaint/DifferentiableRenderer"
@@ -86,9 +80,6 @@ if [ ! -d "$DR_DIR" ]; then
   log "=> Vérifie que ComfyUI-3D-Pack est bien sous $COMFY/custom_nodes/ComfyUI-3D-Pack"
   exit 1
 fi
-#cd "$COMFY/custom_nodes/ComfyUI-3D-Pack/"
-#pip install -r requirements.txt
-#python install.py
 
 log "Compilation mesh painter..."
 cd "$DR_DIR"
