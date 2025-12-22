@@ -67,9 +67,9 @@ ldconfig -p | grep -E "libOpenGL\.so\.0|libGL\.so\.1" || true
 
 
 log "Installation ComfyUI-3D-Pack "
-cd "$COMFY/custom_nodes/
+cd "$COMFY/custom_nodes/"
 git clone https://github.com/MrForExample/ComfyUI-3D-Pack.git
-cd "$COMFY/custom_nodes/ComfyUI-3D-Pack/
+cd "$COMFY/custom_nodes/ComfyUI-3D-Pack/"
 pip install -r requirements.txt
 python install.py
 
