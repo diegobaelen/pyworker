@@ -1,5 +1,5 @@
 #!/bin/bash
-wget https://huggingface.co/Comfy-Org/hunyuan3D_2.1_repackaged/resolve/main/hunyuan_3d_v2.1.safetensors -O /workspace/ComfyUI/models/checkpoints/
+wget https://huggingface.co/Comfy-Org/hunyuan3D_2.1_repackaged/resolve/main/hunyuan_3d_v2.1.safetensors -O /workspace/ComfyUI/models/checkpoints/hunyuan_3d_v2.1.safetensors
 
 
 # Add cloudflare gpg key
