@@ -1,4 +1,6 @@
 #!/bin/bash
+wget https://huggingface.co/Comfy-Org/hunyuan3D_2.1_repackaged/resolve/main/hunyuan_3d_v2.1.safetensors -O /workspace/ComfyUI/models/checkpoints/
+
 
 # Add cloudflare gpg key
 sudo mkdir -p --mode=0755 /usr/share/keyrings
