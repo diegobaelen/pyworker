@@ -1,7 +1,6 @@
 #!/bin/bash
 wget https://huggingface.co/Comfy-Org/hunyuan3D_2.1_repackaged/resolve/main/hunyuan_3d_v2.1.safetensors -O /workspace/ComfyUI/models/checkpoints/hunyuan_3d_v2.1.safetensors
 
-
 # Add cloudflare gpg key
 sudo mkdir -p --mode=0755 /usr/share/keyrings
 curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null
@@ -15,6 +14,6 @@ echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://next.pkg.c
 # install cloudflared
 sudo apt-get update && sudo apt-get install cloudflared
 
-#Dans un screen:
+screen -dmS cf bash -c 'cloudflared tunnel --url http://localhost:18288 > cf_$(date +%Y%m%d_%H%M%S).log 2>&1'
+grep -Eo 'https://[^[:space:]"'"'"'<>]+' cf_*.log |grep trycloudflare
 
-cloudflared tunnel --url http://localhost:18288
