@@ -12,7 +12,7 @@ echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudf
 echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://next.pkg.cloudflare.com/cloudflared any main' | sudo tee /etc/apt/sources.list.d/cloudflared.list
 
 # install cloudflared
-sudo apt-get update && sudo apt-get install cloudflared
+sudo apt-get update && sudo apt-get install cloudflared screen -y
 
 screen -dmS cf bash -c 'cloudflared tunnel --url http://localhost:18288 > cf_$(date +%Y%m%d_%H%M%S).log 2>&1'
 grep -Eo 'https://[^[:space:]"'"'"'<>]+' cf_*.log |grep trycloudflare
